@@ -3,22 +3,19 @@ const createBoard = (rows, columns) => {
   return Array(rows)
     .fill(0)
     .map((_, row) => {
-      return (
-        Array(columns)
-          .fill(0)
-          // eslint-disable-next-line no-shadow
-          .map((_, column) => {
-            return {
-              row,
-              column,
-              opened: false,
-              flagged: false,
-              mined: false,
-              exploded: false,
-              nearMines: 0,
-            };
-          })
-      );
+      return Array(columns)
+        .fill(0)
+        .map((_, column) => {
+          return {
+            row,
+            column,
+            opened: false,
+            flagged: false,
+            mined: false,
+            exploded: false,
+            nearMines: 0,
+          };
+        });
     });
 };
 
@@ -66,7 +63,6 @@ const getNeighbors = (board, row, column) => {
       }
     });
   });
-
   return neighbors;
 };
 
@@ -107,6 +103,13 @@ const showMines = board =>
     .filter(field => field.mined)
     .forEach(field => (field.opened = true));
 
+const invertFlag = (board, row, column) => {
+  const field = board[row][column];
+  field.flagged = !field.flagged;
+};
+
+const flagsUsed = board => fields(board).filter(field => field.flagged).length;
+
 export {
   createMinedBoard,
   cloneBoard,
@@ -114,4 +117,6 @@ export {
   hadExplosion,
   wonGame,
   showMines,
+  invertFlag,
+  flagsUsed,
 };
